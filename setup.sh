@@ -7,7 +7,6 @@ QUIET="" # can be -q or -qq
 #
 echo "adding postgresql repository..."
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-#wget  -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] http://apt.postgresql.org/pub/repos/apt/ $(sed -n 's/^UBUNTU_CODENAME=\(.*\)/\1/ p' /etc/os-release)-pgdg main"
 echo "... DONE!"
 
@@ -45,6 +44,7 @@ cat <<EOF | sudo tee -a /etc/postgresql/10/main/pg_hba.conf
 #
 host    all             all             0.0.0.0/0            md5
 EOF
+
 sudo service postgresql restart
 echo "... DONE!"
 
@@ -61,3 +61,28 @@ sudo -u postgres psql -c "CREATE DATABASE developer;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE developer TO developer;"
 echo "... DONE!"
 
+#
+# GREETINGS
+#
+cat <<EOF
+  +----------------------------------------------------------------------------+
+  |                                                                            |
+  |            W E L C O M E   T O   P O S T G R E S Q L   v 10                |
+  |                                                                            |
+  +----------------------------------------------------------------------------+
+
+  You can log on to the PostgreSQL RDBMS:
+
+  1. locally on the vagrant VM:
+    a. log on to the vagrant VM 
+          host#> vagrant ssh 
+    b. log on to the DB using either "postgres" or "developer" (password "password")
+          guest#> sudo -u postgres psql
+       or
+          guest#> sudo -u developer psql
+          
+  2. remotely, e.g. from the host:
+          host#> psql -U developer -h 192.168.56.3
+          Password for user developer: ************ (enter) 
+
+EOF
