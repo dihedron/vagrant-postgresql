@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "postgresql"
     config.vm.box_check_update = false
 #   config.vm.network "forwarded_port", guest: 80, host: 8080
-#   config.vm.network "private_network", ip: "192.168.33.12"
+    config.vm.network "private_network", ip: "192.168.56.3"
     config.vm.provider "virtualbox" do |vb|
         vb.name = "PostgreSQL"
         vb.memory = "4096"
@@ -48,6 +48,6 @@ Vagrant.configure("2") do |config|
         # VM (tweak as needed!)
         config.proxy.http     = "http://_gateway:3128/"
         config.proxy.https    = "http://_gateway:3128/"
-        config.proxy.no_proxy = "localhost,127.0.0.1,.example.com"
+        config.proxy.no_proxy = "localhost,127.0.0.1,10.,192.168.,.example.com"
     end
 end
