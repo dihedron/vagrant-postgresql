@@ -30,8 +30,21 @@ echo "... DONE!"
 # CONFIGURE POSTGRESQL TO ACCEPT REMOTE CONNECTIONS
 #
 echo "configuring remote access to PostgreSQL..."
-echo "listen_addresses = '*'" | sudo tee -a /etc/postgresql/10/main/postgresql.conf
-echo "# Custom settings\nhost    all             all             0.0.0.0/0            md5" | sudo tee -a /etc/postgresql/10/main/pg_hba.conf
+cat <<EOF | sudo tee -a /etc/postgresql/10/main/postgresql.conf
+
+#
+# Custom settings
+#
+listen_addresses = '*'
+EOF
+
+cat <<EOF | sudo tee -a /etc/postgresql/10/main/pg_hba.conf
+
+#
+# Custom settings
+#
+host    all             all             0.0.0.0/0            md5
+EOF
 sudo service postgresql restart
 echo "... DONE!"
 
@@ -47,9 +60,4 @@ sudo -u postgres psql -c "CREATE ROLE developer WITH LOGIN PASSWORD 'password' S
 sudo -u postgres psql -c "CREATE DATABASE developer;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE developer TO developer;"
 echo "... DONE!"
-
-
-
-
-
 
