@@ -56,9 +56,13 @@ sudo useradd --create-home --shell /bin/bash --comment "Developer" "developer"
 sudo chpasswd <<EOF
 developer:password
 EOF
-sudo -u postgres psql -c "CREATE ROLE developer WITH LOGIN PASSWORD 'password' SUPERUSER CREATEDB CREATEROLE INHERIT;"
-sudo -u postgres psql -c "CREATE DATABASE developer;"
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE developer TO developer;"
+
+sudo -u postgres psql <<EOF
+CREATE ROLE developer WITH LOGIN PASSWORD 'password' SUPERUSER CREATEDB CREATEROLE INHERIT;
+CREATE DATABASE developer;
+GRANT ALL PRIVILEGES ON DATABASE developer TO developer;
+EOF
+
 echo "... DONE!"
 
 #
@@ -80,7 +84,7 @@ cat <<EOF
           guest#> sudo -u postgres psql
        or
           guest#> sudo -u developer psql
-          
+
   2. remotely, e.g. from the host:
           host#> psql -U developer -h 192.168.56.3
           Password for user developer: ************ (enter) 
